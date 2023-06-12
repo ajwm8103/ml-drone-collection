@@ -32,13 +32,13 @@ namespace MBaske
         [System.Serializable]
         public class Objective {
             public float cumulativeReward = 0f;
-            public int targetCount { get; private set; }
+            public int targetCount;
             public Vector3 currentTarget { get; private set; }
             public Vector3 currentTargetGlobal { get; private set; }
             [Range(0.05f, 1f)]
             public float targetRadius = 0.2f;
-            public float timeIn { get; private set; }
-            public float timeOut { get; private set; }
+            public float timeIn;
+            public float timeOut;
             public float points;
 
             public void Reset()
@@ -147,18 +147,22 @@ namespace MBaske
 
             //fitness += 1.0f / (1.0f + distToTarget);
             fitness += distanceGain;
-            Debug.Log(distanceGain);
+            //Debug.Log(distanceGain);
 
             // We don't want weirdos
             float scoreFactor = Mathf.Pow(multicopter.Frame.up.y, 2f);
             const float target_time = 0.5f;
+            bool caughtTarget = false;
             if (distToTarget < objective.targetRadius)
             {
                 objective.AddTimeIn(Time.fixedDeltaTime);
                 if (objective.timeIn > target_time)
                 {
-                    fitness += scoreFactor * objective.points / (1.0f + objective.timeOut);
+                    caughtTarget = true;
+                    fitness += 1.3f * scoreFactor * objective.points / (1.0f + objective.timeOut);
+                    //Debug.Log(string.Format("End boost {0}", scoreFactor * objective.points / (1.0f + objective.timeOut)));
                     objective.NextTarget(bounds);
+                    prevDistToTarget = Vector3.Distance(objective.currentTargetGlobal, multicopter.Frame.position);
                     objective.points = Vector3.Distance(objective.currentTargetGlobal, multicopter.Frame.position);
                 }
             }
@@ -173,7 +177,7 @@ namespace MBaske
             //AddReward(multicopter.Rigidbody.velocity.magnitude * -0.2f);
 
             objective.cumulativeReward += fitness;
-            prevDistToTarget = distToTarget;
+            if (!caughtTarget) prevDistToTarget = distToTarget;
         }
 
         public override void Heuristic(in ActionBuffers actionsOut)
