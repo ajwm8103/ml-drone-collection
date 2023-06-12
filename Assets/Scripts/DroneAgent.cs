@@ -138,9 +138,9 @@ namespace MBaske
                 }
 
                 AddReward(fitness);
-                //AddReward(multicopter.Frame.up.y);
+                AddReward(0.3f * multicopter.Frame.up.y);
                 //AddReward(multicopter.Rigidbody.velocity.magnitude * -0.2f);
-                //AddReward(multicopter.Rigidbody.angularVelocity.magnitude * -0.1f);
+                AddReward(multicopter.Rigidbody.angularVelocity.magnitude * -0.1f);
             }
             else
             {
