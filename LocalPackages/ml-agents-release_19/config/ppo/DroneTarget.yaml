@@ -2,17 +2,17 @@ behaviors:
   DroneTarget:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 128
-      buffer_size: 2048
+      batch_size: 256
+      buffer_size: 16348
       learning_rate: 0.0002
       beta: 0.01
       epsilon: 0.2
       lambd: 0.96
-      num_epoch: 3
+      num_epoch: 4
       learning_rate_schedule: constant
     network_settings:
       normalize: true
-      hidden_units: 48
+      hidden_units: 32
       num_layers: 2
       vis_encode_type: simple
     reward_signals:
