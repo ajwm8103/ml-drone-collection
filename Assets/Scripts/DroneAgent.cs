@@ -31,6 +31,7 @@ namespace MBaske
 
         [System.Serializable]
         public class Objective {
+            public float cumulativeReward = 0f;
             public int targetCount { get; private set; }
             public Vector3 currentTarget { get; private set; }
             public Vector3 currentTargetGlobal { get; private set; }
@@ -42,6 +43,7 @@ namespace MBaske
 
             public void Reset()
             {
+                cumulativeReward = 0f;
                 targetCount = 0;
                 timeIn = 0f;
                 timeOut = 0f;
@@ -88,7 +90,10 @@ namespace MBaske
                 multicopter = multicopterChild;
                 multicopter.Initialize();
             }
+            objective.Reset();
             objective.NextTarget(bounds);
+            objective.points = Vector3.Distance(objective.currentTargetGlobal, multicopter.Frame.position);
+
             prevDistToTarget = Vector3.Distance(objective.currentTargetGlobal, multicopter.Frame.position);
             resetter.Reset();
         }
@@ -142,6 +147,7 @@ namespace MBaske
 
             //fitness += 1.0f / (1.0f + distToTarget);
             fitness += distanceGain;
+            Debug.Log(distanceGain);
 
             // We don't want weirdos
             float scoreFactor = Mathf.Pow(multicopter.Frame.up.y, 2f);
@@ -161,11 +167,12 @@ namespace MBaske
                 objective.AddTimeOut(Time.fixedDeltaTime);
             }
 
+            fitness -= 0.01f * multicopter.Rigidbody.angularVelocity.magnitude;
+            fitness += 0.007f * (multicopter.Frame.up.y - 1);
             AddReward(fitness);
-            AddReward(0.1f * multicopter.Frame.up.y);
             //AddReward(multicopter.Rigidbody.velocity.magnitude * -0.2f);
-            AddReward(multicopter.Rigidbody.angularVelocity.magnitude * -0.1f);
 
+            objective.cumulativeReward += fitness;
             prevDistToTarget = distToTarget;
         }
 
@@ -178,13 +185,18 @@ namespace MBaske
             continuousActionsOut[3] = 0f;
         }
 
-        public void OnDrawGizmos(){
+        public void OnDrawGizmos()
+        {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(transform.position, bounds.size);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(targetPos, objective.targetRadius);
+            
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(multicopter.Frame.position, objective.targetRadius);
+
+            float distToTarget = Vector3.Distance(objective.currentTargetGlobal, multicopter.Frame.position);
+            Gizmos.color = distToTarget < objective.targetRadius ? Color.cyan : Color.blue;
+            Gizmos.DrawWireSphere(targetPos, objective.targetRadius);
+
         }
     }
 }
