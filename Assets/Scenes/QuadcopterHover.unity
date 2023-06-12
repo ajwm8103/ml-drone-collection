@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731257, g: 0.38074484, b: 0.35872796, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 928071570, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 3096198749483499493, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: m_RootOrder

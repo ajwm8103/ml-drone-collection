@@ -97,6 +97,7 @@ namespace MBaske
             float distToTarget = toTarget.magnitude;
             toTarget /= Mathf.Max(maxDistance, distToTarget);
             sensor.AddObservation(toTarget);
+            sensor.AddObservation(multicopter.Frame.position - transform.position);
         }
 
         public override void OnActionReceived(ActionBuffers actionBuffers)
