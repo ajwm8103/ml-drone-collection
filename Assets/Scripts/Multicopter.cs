@@ -10,7 +10,7 @@ namespace MBaske
         public Vector3 Inclination => new Vector3(Frame.right.y, Frame.up.y, Frame.forward.y);
 
         [SerializeField]
-        private bool reversableThrust = false;
+        private bool reversableThrust = true;
         [SerializeField]
         private float thrustResponse = 20;
         [SerializeField]
@@ -30,16 +30,16 @@ namespace MBaske
 
         private void OnValidate()
         {
-            for (int i = 0; i < Rotors.Length; i++)
+            /*for (int i = 0; i < Rotors.Length; i++)
             {
                 Rotors[i].Reversable = reversableThrust;
                 Rotors[i].ThrustResponse = thrustResponse;
                 Rotors[i].ThrustScale = thrustScale;
                 Rotors[i].TorqueScale = torqueScale;
-            }
+            }*/
 
             Initialize();
-            UpdateTilt(pitch, roll, yaw);
+            //UpdateTilt(pitch, roll, yaw);
         }
 
         public void Initialize()
@@ -48,8 +48,18 @@ namespace MBaske
 
             for (int i = 0; i < Rotors.Length; i++)
             {
+                Rotors[i].Reversable = reversableThrust;
+                Rotors[i].ThrustResponse = thrustResponse;
+                Rotors[i].ThrustScale = thrustScale;
+                Rotors[i].TorqueScale = torqueScale;
+            }
+
+            for (int i = 0; i < Rotors.Length; i++)
+            {
                 Rotors[i].Initialize();
             }
+
+            UpdateTilt(pitch, roll, yaw);
         }
 
         public void OnReset()

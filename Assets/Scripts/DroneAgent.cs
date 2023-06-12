@@ -10,7 +10,7 @@ namespace MBaske
     public class DroneAgent : Agent
     {
         [SerializeField]
-        private Multicopter multicopter;
+        private Multicopter multicopter = null;
 
         private Bounds bounds;
         public Vector3 boundsSize = Vector3.one * 100f;
@@ -61,6 +61,7 @@ namespace MBaske
 
         public override void Initialize()
         {
+            multicopter = GetComponentInChildren<Multicopter>();
             multicopter.Initialize();
 
             bounds = new Bounds(transform.position, boundsSize);
@@ -69,6 +70,11 @@ namespace MBaske
 
         public override void OnEpisodeBegin()
         {
+            Multicopter multicopterChild = GetComponentInChildren<Multicopter>();
+            if (multicopterChild != multicopter){
+                multicopter = multicopterChild;
+                multicopter.Initialize();
+            }
             resetter.Reset();
         }
 
@@ -94,6 +100,15 @@ namespace MBaske
 
         public override void OnActionReceived(ActionBuffers actionBuffers)
         {
+            /*bool cond = transform.position.magnitude < 0.1f;
+            if (cond)
+            {
+                Debug.Log(actionBuffers.ContinuousActions.Array[0]);
+                Debug.Log(actionBuffers.ContinuousActions.Array[1]);
+                Debug.Log(actionBuffers.ContinuousActions.Array[2]);
+                Debug.Log(actionBuffers.ContinuousActions.Array[3]);
+                Debug.Log(transform.position);
+            }*/
             multicopter.UpdateThrust(actionBuffers.ContinuousActions.Array);
 
             if (bounds.Contains(multicopter.Frame.position))
@@ -130,6 +145,15 @@ namespace MBaske
             {
                 resetter.Reset();
             }
+        }
+
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            var continuousActionsOut = actionsOut.ContinuousActions;
+            continuousActionsOut[0] = 0f;
+            continuousActionsOut[1] = 0f;
+            continuousActionsOut[2] = 0f;
+            continuousActionsOut[3] = 0f;
         }
 
         public void OnDrawGizmos(){
