@@ -75,6 +75,7 @@ namespace MBaske
                 multicopter = multicopterChild;
                 multicopter.Initialize();
             }
+            objective.NextTarget(bounds);
             resetter.Reset();
         }
 
