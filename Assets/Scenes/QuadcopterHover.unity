@@ -216,7 +216,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 928071569, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: isTraining
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 928071569, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: boundsSize.x
@@ -237,7 +237,7 @@ PrefabInstance:
     - target: {fileID: 928071570, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 70732b9d971e74ec9904caa66540b84e, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: 480c4bd5e9f65c729a10972927d526b8, type: 3}
     - target: {fileID: 928071570, guid: 9e56a1146fc84004e831ff03d475bd56, type: 3}
       propertyPath: m_BehaviorName
       value: DroneTarget
